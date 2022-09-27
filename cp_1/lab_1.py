@@ -1,4 +1,7 @@
 import re
+from collections import Counter 
+import math
+
 
 alphabet = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'
 alphabetS = 'абвгдежзийклмнопрстуфхцчшщъыьэюя '
@@ -15,5 +18,26 @@ with open('cp_1/plainText.txt', 'w', encoding='utf-8') as file:
 with open('cp_1/noSpacesText.txt', 'w', encoding='utf-8') as file:
     file.writelines(noSpacesText)
 
-print(plainText + '\n')
-print(noSpacesText)
+# print(plainText + '\n')
+# print(noSpacesText)
+
+
+def monogram(txt):
+    #спочатку порахуємо частоту букв
+    countedLetters = Counter(txt)
+    for i in countedLetters.keys():
+        # print(i)
+        countedLetters[i] = countedLetters[i]/len(txt)
+    #рахуємо ентропію за формулою з методички 
+    print(countedLetters)
+    monog = 0
+    for i in countedLetters.keys():
+        # print(i)
+        monog += (-countedLetters[i] * math.log2(countedLetters[i]))
+        print(f'ентропія для {i} : {(-countedLetters[i] * math.log2(countedLetters[i]))}'  )
+    print(f'загальна ентропія : {monog}')
+    return (monog)
+
+monogram(plainText)
+monogram(noSpacesText)
+
