@@ -5,15 +5,15 @@ import math
 import pandas as pd
 
 # відкрили файл, та  відформатували текст, отримали текст з пробілами, та текст - без
-with open('cp_1_Dmytrenko_Serbinenko/txtFiles/Война и мир.Том 2.Лев Толстой.txt', 'r', encoding='utf-8') as file:
+with open('txtFiles/Война и мир.Том 2.Лев Толстой.txt', 'r', encoding='utf-8') as file:
     plainText = file.read().lower().replace('ъ', 'ь').replace('ё', 'е')
     plainText = re.compile(r'\s*[^а-яА-Я ]').sub('', plainText)
     reg = re.compile('[^а-яА-Я]')
     noSpacesText = reg.sub('', plainText)
 
-with open('cp_1_Dmytrenko_Serbinenko/txtFiles/plainText.txt', 'w', encoding='utf-8') as file:
+with open('txtFiles/plainText.txt', 'w', encoding='utf-8') as file:
     file.writelines(plainText)    
-with open('cp_1_Dmytrenko_Serbinenko/txtFiles/noSpacesText.txt', 'w', encoding='utf-8') as file:
+with open('txtFiles/noSpacesText.txt', 'w', encoding='utf-8') as file:
     file.writelines(noSpacesText)
 
 
@@ -24,6 +24,8 @@ with open('cp_1_Dmytrenko_Serbinenko/txtFiles/noSpacesText.txt', 'w', encoding='
 def monogram(txt, withSpace = False):
     #спочатку порахуємо частоту букв
     countedLetters = Counter(txt)
+    
+    
     df = pd.DataFrame(list(countedLetters.items()), columns=['Буква', 'Кількість повторів'])
     new_list = []
     for i in countedLetters.keys():
@@ -50,9 +52,9 @@ def monogram(txt, withSpace = False):
     print(f'загальна ентропія для монограм: {monog}')
     # df.to_csv(r'monogram.csv')
     if withSpace == True:
-        df.to_excel('cp_1_Dmytrenko_Serbinenko/xlFiles/monogram_space.xlsx', index=False, sheet_name='Монограма з пробілами')
+        df.to_excel('xlFiles/monogram_space.xlsx', index=False, sheet_name='Монограма з пробілами')
     else:
-        df.to_excel('cp_1_Dmytrenko_Serbinenko/xlFiles/monogram.xlsx', index=False, sheet_name='Монограма без пробілів')
+        df.to_excel('xlFiles/monogram.xlsx', index=False, sheet_name='Монограма без пробілів')
     return (monog)
 
 
@@ -89,9 +91,9 @@ def bigrams(txt, withSpace = False):
     df.at[0, 'R'] = R
 
     if withSpace == True:
-        df.to_excel('cp_1_Dmytrenko_Serbinenko/xlFiles/bigram_space.xlsx', index=False, sheet_name='Монограма з пробілами')
+        df.to_excel('xlFiles/bigram_space.xlsx',  index=False, sheet_name='Монограма з пробілами')
     else:
-        df.to_excel('cp_1_Dmytrenko_Serbinenko/xlFiles/bigram.xlsx', index=False, sheet_name='Монограма без пробілів')
+        df.to_excel('xlFiles/bigram.xlsx', index=False, sheet_name='Монограма без пробілів')
     
 
 
@@ -101,7 +103,7 @@ def NCbigrams(txt, withSpace = False):
     txtLen = len(txt)
     if txtLen % 2 == 1:
         txtLen -= 1
-    for i in range(txtLen):
+    for i in range(0,txtLen,2):
         NCBigram.append(txt[i:i+2]) # робимо список з 2х елементів 
     NCBigram = Counter(NCBigram)
     df = pd.DataFrame(list(NCBigram.items()), columns=['Біграми без перетину', 'Кількість повторів'])
@@ -126,9 +128,9 @@ def NCbigrams(txt, withSpace = False):
     df.at[0, 'R'] = R
     
     if withSpace == True:
-        df.to_excel('cp_1_Dmytrenko_Serbinenko/xlFiles/NCbigram_space.xlsx', index=False, sheet_name='Монограма з пробілами')
+        df.to_excel('xlFiles/NCbigram_space.xlsx', index=False, sheet_name='Монограма з пробілами')
     else:
-        df.to_excel('cp_1_Dmytrenko_Serbinenko/xlFiles/NCbigram.xlsx', index=False, sheet_name='Монограма без пробілів')
+        df.to_excel('xlFiles/NCbigram.xlsx', index=False, sheet_name='Монограма без пробілів')
     
 
     print(f'загальна ентропія для не перехресної біграми: {bigCount/2}')
