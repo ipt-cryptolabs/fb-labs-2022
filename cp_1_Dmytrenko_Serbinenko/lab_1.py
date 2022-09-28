@@ -85,7 +85,7 @@ def bigrams(txt, withSpace = False):
     else:
         R = 1 - ((bigCount/2)/math.log2(31))
     
-    # print(f'надлишковість: {1 - (bigCount/2)/math.log2(32)}')
+    print(f'надлишковість: {1 - (bigCount/2)/math.log2(32)}')
     df['Ентропія для біграми'] = new_list
     df.at[0, 'Ентропія'] = bigCount/2
     df.at[0, 'R'] = R
@@ -105,11 +105,12 @@ def NCbigrams(txt, withSpace = False):
         txtLen -= 1
     for i in range(0,txtLen,2):
         NCBigram.append(txt[i:i+2]) # робимо список з 2х елементів 
+    bigramLen = len(NCBigram)
     NCBigram = Counter(NCBigram)
     df = pd.DataFrame(list(NCBigram.items()), columns=['Біграми без перетину', 'Кількість повторів'])
 
     for i in NCBigram.keys():
-        NCBigram[i] = NCBigram[i] / txtLen  
+        NCBigram[i] = NCBigram[i] / bigramLen  
         new_list.append(NCBigram[i])  
     
     bigCount = 0
