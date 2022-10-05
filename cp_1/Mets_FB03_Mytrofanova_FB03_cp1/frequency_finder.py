@@ -19,12 +19,12 @@ def letter_frequency(dct):
     return dict(sorted(letters_frequency.items(), key=lambda x: x[1], reverse=True))
 
 
-def bigram_frequency(text, crossing=False):
+def bigram_frequency(text, no_crossing=False):
     bigrams_frequency = {}
-    if crossing:
-        step = 2
-    else:
+    if no_crossing:
         step = 1
+    else:
+        step = 2
 
     for first_letter in range(0, len(text) - 1, step):
         second_letter = first_letter + 2
@@ -32,7 +32,6 @@ def bigram_frequency(text, crossing=False):
             bigrams_frequency[text[first_letter:second_letter]] += 1
         else:
             bigrams_frequency[text[first_letter:second_letter]] = 0
-
     bigrams_number = sum(bigrams_frequency.values())
 
     for bigram, number in bigrams_frequency.items():
@@ -77,18 +76,18 @@ with open('letters_frequency_with_spaces.txt', 'w', encoding='utf-8') as file:
     for letter, frequency in letter_frequency(letter_number).items():
         file.write(str(letter) + ' - ' + str(frequency) + '\n')
 
-with open('bigrams_no_spaces_crossing.csv', 'w', encoding='utf-8') as f:
+with open('bigrams_no_spaces_no_crossing.csv', 'w', encoding='utf-8') as f:
     wr = csv.writer(f)
     wr.writerows(bigram_output(bigram_frequency(no_spaces_text, True), False))
 
-with open('bigrams_spaces_crossing.csv', 'w', encoding='utf-8') as f:
+with open('bigrams_spaces_no_crossing.csv', 'w', encoding='utf-8') as f:
     wr = csv.writer(f)
     wr.writerows(bigram_output(bigram_frequency(text, True)))
 
-with open('bigrams_no_spaces.csv', 'w', encoding='utf-8') as f:
+with open('bigrams_no_spaces_crossing.csv', 'w', encoding='utf-8') as f:
     wr = csv.writer(f)
     wr.writerows(bigram_output(bigram_frequency(no_spaces_text), False))
 
-with open('bigrams_spaces.csv', 'w', encoding='utf-8') as f:
+with open('bigrams_spaces_crossing.csv', 'w', encoding='utf-8') as f:
     wr = csv.writer(f)
     wr.writerows(bigram_output(bigram_frequency(text)))
