@@ -79,7 +79,9 @@ cryptedtext_d = ''
 for i in cryptedlist_d:
     cryptedtext_d += i
 #print(cryptedtext_d)
-
+cryptfile_d = open('cryptfile_d.txt', 'w')
+cryptfile_d.write(cryptedtext_d)
+cryptfile_d.close()
 
 
 
