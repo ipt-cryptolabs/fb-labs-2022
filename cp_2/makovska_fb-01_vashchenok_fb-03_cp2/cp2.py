@@ -1,21 +1,15 @@
 import re
 
-alfavit = 'абвгдеёэжзиыйклмнопрстуфхцчшщъьюя'
-alfavit_probil = 'абвгдеёэжзиыйклмнопрстуфхцчшщъьюя '
+alfavit_d = 'абвгдеёэжзиыйклмнопрстуфхцчшщъьюя'
 
 
 def filter_txt(file_name):
-    # зчитуємо текст
     file = open(file_name, encoding="utf8")
     t = file.read()
     file.close()
-    # переводимо всі літери в нижній регістр і оброблюємо
     lowered_text = t.lower()
-    new_txt = re.sub(r'[^а-яё]', '',
-                     lowered_text)  # прибрати всі символи, які не схожі на літери нашого алфавіту(наприкл позначення
-    # переходу на новий рядок)
-    # записуємо оброблений текст у файл
-    new_file = open('filtered_d.txt', 'w')
+    new_txt = re.sub(r'[^а-яё]', '',lowered_text)
+    new_file = open('filtered.txt', 'w')
     new_file.write(new_txt)
     new_file.close()
 
@@ -23,7 +17,7 @@ def filter_txt(file_name):
 def dict_stv():
     dict_d = {}
     num = 0
-    for i in alfavit:
+    for i in alfavit_d:
         dict_d.update({i: num})
         num += 1
     return dict_d
@@ -89,21 +83,9 @@ cryptfile_d.close()
 #print
 
 
-
-import re
 alfavit = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'
 alfavit_arr = ['а', 'б', 'в', 'г', 'д', 'е', 'ж','з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ','ы', 'ь', 'э', 'ю', 'я']
   
-
-def filter_txt(file_name):
-    file = open( file_name, encoding="utf8" )
-    t = file.read()
-    file.close()
-    lowered_text = t.lower()
-    new_txt = re.sub( r'[^а-яё]', '', lowered_text )  
-    new_file = open('filtered.txt', 'w')
-    new_file.write(new_txt)
-    new_file.close()
 
 def frequency_of_letters(txt, alfavit):
     dictionary = {} # словник зі значеннями літера:кількість зустріваності
