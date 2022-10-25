@@ -14,6 +14,7 @@ alphabet = 'абвгдежзийклмнопрстуфхцчшщыьэюя'
 # with open('pt.txt', 'w') as file:
 #     file.write(txt)
 
+text = open('pt.txt', 'r').read()
 keys = []
 
 def key_gen():
@@ -34,4 +35,21 @@ def key_gen():
         keys.append(key)
 
 key_gen()
-print(keys)
+# print(keys)
+
+def encrypt(txt: str, keys: list):
+    # print(f'text len: {len(txt)}\n')
+    with open('encrypted_text.txt', 'w+') as file:
+        for key in keys:
+            encrypted = []
+            for i in range(len(txt)):
+                enc_letter = alphabet[(alphabet.index(txt[i]) + alphabet.index(key[i % len(key)]))%len(alphabet)]
+                encrypted.append(enc_letter)
+            enc_txt = ''.join(encrypted)
+            # print(len(enc_txt))
+            file.write(f'key: {key}\n{enc_txt}\n\n')
+    return 
+
+encrypt(text, keys)
+
+
