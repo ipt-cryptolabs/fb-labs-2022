@@ -1,4 +1,5 @@
 import random
+from collections import Counter
 
 # file = open('se.txt').read().lower().replace('\n', '').replace(' ', '').replace('ё', 'е').replace('ъ', 'ь')
 
@@ -43,12 +44,18 @@ def encrypt(txt: str, keys: list):
         for key in keys:
             encrypted = []
             for i in range(len(txt)):
-                enc_letter = alphabet[(alphabet.index(txt[i]) + alphabet.index(key[i % len(key)]))%len(alphabet)]
-                encrypted.append(enc_letter)
+                letter = alphabet[(alphabet.index(txt[i]) + alphabet.index(key[i % len(key)]))%len(alphabet)]
+                encrypted.append(letter)
             enc_txt = ''.join(encrypted)
-            # print(len(enc_txt))
-            file.write(f'key: {key}\n{enc_txt}\n\n')
-    return 
+            enc_dict = Counter(encrypted)
+            index = 0
+            for i in enc_dict:
+                index += enc_dict[i]*(enc_dict[i] - 1)
+            dict_sum = sum(enc_dict.values())
+            index /= dict_sum*(dict_sum - 1)
+            # print(index)
+            file.write(f'key: {key}\nindex: {index}\ntext:\n{enc_txt}\n\n')
+    # return 
 
 encrypt(text, keys)
 
