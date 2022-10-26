@@ -3,7 +3,7 @@ from collections import Counter
 
 # file = open('se.txt').read().lower().replace('\n', '').replace(' ', '').replace('ё', 'е').replace('ъ', 'ь')
 
-alphabet = 'абвгдежзийклмнопрстуфхцчшщыьэюя'
+alphabet = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'
 
 # txt = ''
 # for i in file:
@@ -79,3 +79,28 @@ index_dict = search()
 # print(max(index_dict.values()))
 
 key_len = max(index_dict, key=index_dict.get)
+
+def key_founder(len_key):
+    blocks = []
+    for i in range(len_key):
+        blocks.append(var_text[i::len_key])
+
+    top = 'аео'
+    for letter in top:
+        key = ''
+        for block in blocks:
+            block_lst = []
+            for i in range(len(block)):
+                block_lst.append(block[i])
+            blocksCalc = Counter(block_lst)
+            maxCalc = max(blocksCalc, key=blocksCalc.get)
+            key_letter = alphabet[(alphabet.index(maxCalc) - alphabet.index(letter))%len(alphabet)]
+            key += key_letter
+        print(key)
+
+key_founder(key_len)
+'''
+фуярцтыцчтьхьюэьящуйхцотущью
+поълснцстнчрчщшчъфодрсйнофчщ
+жесвиднийдозорпослеызиаделор # последнийдозор
+'''
