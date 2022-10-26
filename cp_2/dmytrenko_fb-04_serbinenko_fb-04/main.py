@@ -17,6 +17,8 @@ alphabet = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'
 
 text = open('pt.txt', 'r', encoding='utf-8').read()
 var_text = open('var_text.txt', 'r', encoding='utf-8').read()
+
+### завдання 1 ###
 keys = []
 
 def key_gen():
@@ -62,6 +64,8 @@ def index_counter(txt: str):
 # key_gen()
 # encrypt(text, keys)
 
+### завдання 2 ###
+
 def search():
     count = {}
     for i in range(1, 31):
@@ -74,11 +78,6 @@ def search():
         index /= i
         count[i] = index
     return count
-
-index_dict = search()
-# print(max(index_dict.values()))
-
-key_len = max(index_dict, key=index_dict.get)
 
 def key_founder(len_key):
     blocks = []
@@ -98,9 +97,24 @@ def key_founder(len_key):
             key += key_letter
         print(key)
 
+
+def decrypt(key, text):
+    answer = []
+    for i in range(len(text)):
+        key_letter = alphabet[(alphabet.index(text[i]) - alphabet.index(key[i % len(key)]))%len(alphabet)]
+        answer.append(key_letter)
+    answer = ''.join(answer)
+    return answer
+
+index_dict = search()
+key_len = max(index_dict, key=index_dict.get)
 key_founder(key_len)
 '''
 фуярцтыцчтьхьюэьящуйхцотущью
 поълснцстнчрчщшчъфодрсйнофчщ
 жесвиднийдозорпослеызиаделор # последнийдозор
 '''
+key = 'последнийдозор'
+answer = decrypt(key, var_text)
+with open('answer.txt', 'w', encoding='utf-8') as file:
+    file.write(answer)
