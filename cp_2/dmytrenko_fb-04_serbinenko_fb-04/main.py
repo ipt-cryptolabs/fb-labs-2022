@@ -4,7 +4,7 @@ from collections import Counter
 # file = open('se.txt').read().lower().replace('\n', '').replace(' ', '').replace('ё', 'е').replace('ъ', 'ь')
 
 alphabet = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'
-
+    
 # txt = ''
 # for i in file:
 #     if i in alphabet:
@@ -78,6 +78,7 @@ def search():
         index /= i
         count[i] = index
     return count
+    
 
 def key_founder(len_key):
     blocks = []
@@ -96,6 +97,8 @@ def key_founder(len_key):
             key_letter = alphabet[(alphabet.index(maxCalc) - alphabet.index(letter))%len(alphabet)]
             key += key_letter
         print(key)
+        
+    
 
 
 def decrypt(key, text):
@@ -105,8 +108,10 @@ def decrypt(key, text):
         answer.append(key_letter)
     answer = ''.join(answer)
     return answer
+    
 
 index_dict = search()
+print(index_dict)
 key_len = max(index_dict, key=index_dict.get)
 key_founder(key_len)
 '''
