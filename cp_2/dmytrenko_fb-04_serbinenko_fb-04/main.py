@@ -112,7 +112,8 @@ def decrypt(key, text):
 
 index_dict = search()
 print(index_dict)
-key_len = max(index_dict, key=index_dict.get)
+# key_len = max(index_dict, key=index_dict.get)
+key_len = 14
 key_founder(key_len)
 '''
 фуярцтыцчтьхьюэьящуйхцотущью
