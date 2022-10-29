@@ -9,7 +9,6 @@ def clear_text(raw_text):
         text = file.read().lower()
 
     text = re.sub("[^а-я]", " ", text)
-    text = text.replace("ъ", "ь")
     text = text.replace("ё", "е")
 
     while "  " in text:
