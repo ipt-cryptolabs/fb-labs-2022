@@ -14,86 +14,52 @@ def write_file(filename, text):
     with open(filename, 'w', encoding='utf-8') as file:
         file.writelines(text)
 
-def vizhener(alphabet, key, text):
+def vizhener_crypt(alphabet, key, text):
     shifred = ''
     values_original = []
     values_key = []
     values_shifred = []
-    for i in text:
-        values_original.append(alphabet.index(i))
+    for letter in text:
+        values_original.append(alphabet.index(letter))
 
-    for i in key:
-        values_key.append(alphabet.index(i))
+    for letter in key:
+        values_key.append(alphabet.index(letter))
 
-    for i in range(len(text)):
-        values_shifred.append((values_key[i % len(key)] + values_original[i]) % len(alphabet))
+    for value in range(len(text)):
+        values_shifred.append((values_key[value % len(key)] + values_original[value]) % len(alphabet))
 
-    for i in values_shifred:
-        shifred += alphabet[i]
+    for value in values_shifred:
+        shifred += alphabet[value]
 
     return shifred
 
-def vizhener_deshifr(text, key, alphabet):
+def vizhener_decrypt(text, key, alphabet):
     original_text = ''
     shifred_values = []
     key_values = []
     original_values = []
 
-    for i in text:
-        shifred_values.append(alphabet.index(i))
+    for letter in text:
+        shifred_values.append(alphabet.index(letter))
 
-    for i in key:
-        key_values.append(alphabet.index(i))
+    for letter in key:
+        key_values.append(alphabet.index(letter))
 
-    for i in range(len(text)):
-        original_values.append((shifred_values[i] - key_values[i % len(key)]) % len(alphabet))
+    for value in range(len(text)):
+        original_values.append((shifred_values[value] - key_values[value % len(key)]) % len(alphabet))
 
-    for i in original_values:
-        original_text += alphabet[i]
+    for value in original_values:
+        original_text += alphabet[value]
 
     return original_text
 
-def compute_indexes(shifr_text):
+def compute_index(shifr_text):
     summ = 0
-    N = Counter(shifr_text)
-    for i in N.values():
-        summ += i*(i-1)
+    frequencies = Counter(shifr_text)
+    for value in frequencies.values():
+        summ += value*(value-1)
 
     return summ / (len(shifr_text)*(len(shifr_text) - 1))
-
-text_to_shifr = readfile('text.txt')
-
-text_to_shifr = text_to_shifr.lower()
-text_to_shifr = re.sub("[^а-я]", " ", text_to_shifr)
-text_to_shifr = text_to_shifr.replace("ё", "е")
-text_to_shifr = text_to_shifr.replace(" ", "")
-
-print(text_to_shifr)
-
-keys = ['са', 'сай', 'сайб', 'сайбе', 'сайберсекюрити']
-shifred_texts = []
-for i in keys:
-    text = vizhener(alphabet, i, text_to_shifr)
-    shifred_texts.append(text)
-    write_file(i + '.txt', text)
-
-
-
-index_for_original_text = compute_indexes(text_to_shifr)
-print(index_for_original_text)
-for i in shifred_texts:
-    print(compute_indexes(i))
-
-print(1/len(alphabet))
-
-print("\n\n\n\n\n")
-
-text_to_deshifr = readfile('shifrtext.txt')
-
-text_to_deshifr = re.sub("[^а-я]", " ", text_to_deshifr)
-text_to_deshifr = text_to_deshifr.replace(" ", "")
-
-arr = []
 
 def smash_text_into_the_blocks(text, r):
     blocks = []
@@ -106,38 +72,61 @@ def smash_text_into_the_blocks(text, r):
 
     return blocks
 
+text_for_crypt = readfile('text.txt')
+
+text_for_crypt = text_for_crypt.lower()
+text_for_crypt = re.sub("[^а-я]", " ", text_for_crypt)
+text_for_crypt = text_for_crypt.replace("ё", "е")
+text_for_crypt = text_for_crypt.replace(" ", "")
+
+keys = ['са', 'сай', 'сайб', 'сайбе', 'сайберсекюрити']
+crypted_texts = []
+for key in keys:
+    text = vizhener_crypt(alphabet, key, text_for_crypt)
+    crypted_texts.append(text)
+    write_file(key + '.txt', text)
+
+index_for_original_text = compute_index(text_for_crypt)
+
+print("Індекс відповідності для оригінального тексту", " : ", index_for_original_text)
+for i in range(0, len(keys)):
+    print(str(keys[i]), " : ", str(compute_index(crypted_texts[i])))
+
+print("\n\n")
+
+text_for_decrypt = readfile('shifrtext.txt')
+
+text_for_decrypt = re.sub("[^а-я]", " ", text_for_decrypt)
+text_for_decrypt = text_for_decrypt.replace(" ", "")
+
+indexes_for_blocks = []
 
 for i in range(2, 35):
-    blocks = smash_text_into_the_blocks(text_to_deshifr, i)
+    blocks = smash_text_into_the_blocks(text_for_decrypt, i)
     summ = 0
     for j in blocks:
-        summ += compute_indexes(j)
-    arr.append(summ/i)
+        summ += compute_index(j)
+    indexes_for_blocks.append(summ/i)
 
-arr_new = []
+for i in range(0,len(indexes_for_blocks)):
+    print(str(i+2) + " : " + str(indexes_for_blocks[i]))
 
-for i in range(0,len(arr)):
-    print(str(i+2) + ":" + str(arr[i]))
+letters_rating_by_frequency = 'оеанитлсрвкудмпьяыгзбчйжшчющэцфъ'
 
-rating_bukv = 'оеанитлсрвкудмпьяыгзбчйжшчющэцфъ'
+blocks = smash_text_into_the_blocks(text_for_decrypt, 13)
 
-blocks = smash_text_into_the_blocks(text_to_deshifr, 13)
 
-keys = []
+for letter in letters_rating_by_frequency[0:3]:
+    kk = []
+    for block in blocks:
+        frequencies = Counter(block)
+        dict(frequencies)
+        sorted_tuple = sorted(frequencies.items(), key=lambda x: x[1], reverse = True)
+        frequencies = dict(sorted_tuple)
 
-for block in blocks:
-    count = Counter(block)
-    dict(count)
-    sorted_tuple = sorted(count.items(), key=lambda x: x[1], reverse = True)
-    count = dict(sorted_tuple)
-    k = (alphabet.index(list(count.keys())[0]) - alphabet.index(rating_bukv[0]))
-    keys.append(k)
+        k = (alphabet.index(list(frequencies.keys())[0]) - alphabet.index(letter))
+        kk.append(alphabet[k])
+    print(kk)
 
-mystr = ''
-
-for i in keys:
-    mystr += alphabet[i]
-
-print(mystr)
-
-print(vizhener_deshifr(text_to_deshifr, mystr, alphabet))
+final_key = 'громыковедьма'
+write_file('final_deshifred_text.txt',vizhener_decrypt(text_for_decrypt, final_key, alphabet))
