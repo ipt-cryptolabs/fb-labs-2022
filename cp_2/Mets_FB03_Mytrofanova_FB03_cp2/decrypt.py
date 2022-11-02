@@ -48,18 +48,34 @@ def find_period():
             period = key
     return period
 
+
 indexes = calculate_periods(text)
+letters = []
+file = open("letters_freq.txt", "r", encoding='utf-8')
+lines = file.readlines()
+for line in lines:
+    letters.append(line[0])
+file.close()
+print(letters)
+
+
+
 def find_key():
     period = find_period()
     blocks = get_blocks(text, period)
     key = ""
     for block in blocks:
         letters_freq = Counter(block)
-        key += alphabet[(alphabet.find(list(letters_freq.keys())[0]) - 14) % 32]
+        key += list(letters_freq.keys())[0]
     return key
 
 
-print(find_key())
+key = find_key()
+for letter in letters:
+    res = ''
+    for i in key:
+        res += alphabet[(alphabet.find(i) - alphabet.find(letter)) % 32]
+    print(res)
 
 # plt.bar(range(len(indexes)), list(indexes.values()), align='center')
 # plt.xticks(range(len(indexes)), list(indexes.keys()))
