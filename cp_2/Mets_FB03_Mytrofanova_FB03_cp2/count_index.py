@@ -14,7 +14,7 @@ def find_index(text):
 
 
 for file in glob.glob("*.txt"):
-    if file == 'text.txt' or file == 'text_for_decr.txt':
+    if file == 'text.txt' or file == 'text_for_decr.txt' or file == 'text.txt' or file == 'letters_freq.txt':
         continue
     with open(file, 'r', encoding='utf-8') as f:
         text = f.read()
