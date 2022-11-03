@@ -34,10 +34,17 @@ def count_period(cypher_text, theoretical_index):
     indexes = []
     differences = []
     for r in range(2, max_key_len):
-        block = ''
-        for j in range(0, len(cypher_text), r):
-            block += cypher_text[j]
-        indexes.append(count_index(block))
+        blocks = []
+        for b in range(0, r):
+            block = ''
+            for j in range(b, len(cypher_text), r):
+                block += cypher_text[j]
+            blocks.append(block)
+        period_indexes = []
+        for b in blocks:
+            period_indexes.append(count_index(b))
+        # sum_indexes /= len(blocks)
+        indexes.append(min(period_indexes))
     for i in indexes:
         differences.append(abs(theoretical_index - i))
     return differences.index(min(differences)) + 2
