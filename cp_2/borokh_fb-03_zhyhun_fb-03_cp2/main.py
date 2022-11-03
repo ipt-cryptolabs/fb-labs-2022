@@ -7,10 +7,12 @@ alphabet_ = ['а', 'б', 'в', 'г', 'д', 'е', 'ж', 'з', 'и', 'й',
 
 
 def letters_probability(text):
-    letters_dict = dict.fromkeys(alphabet_, 0)
+    letters_dict = {}
     for i in text:
         if i in letters_dict:
             letters_dict[i] += 1
+        else:
+            letters_dict[i] = 1
     return letters_dict
 
 
@@ -41,16 +43,6 @@ def compliance_index(text: str, letters: dict):
     for i in letters.keys():
         stats += letters[i] * (letters[i] - 1)
     return (1 / (len(text) * (len(text) - 1))) * stats
-
-
-def theor_compliance_index(df: pd.DataFrame):
-    global alphabet_
-
-    stats = 0
-    for i in alphabet_:
-        stats += (df.loc[df['letter'] == i]['Probability'].values * 584889) * \
-                 ((df.loc[df['letter'] == i]['Probability'].values * 584889) - 1)
-    return (1 / (len(alphabet_) * (len(alphabet_) - 1))) * stats
 
 
 def break_for_blocks(text: str, r: int):
@@ -124,8 +116,6 @@ if __name__ == '__main__':
     with open('text_2.txt', 'r', encoding='UTF-8') as f:
         text1 = f.read()
     text1 = text1.replace('\n', '')
-    text1 = text1.replace('ё', 'е')
-    text1 = text1.replace(' ', '')
 
     indexes = {}
     for i in range(2, 31):
@@ -140,17 +130,18 @@ if __name__ == '__main__':
         if value == max_r:
             print(key)
             break
-    key_blocks = break_for_blocks_(text1, 14)
-
+    key_blocks = break_for_blocks_(text1, 21)
+    cr_key = ''
+    for i in key_blocks:
+        probs = letters_probability(i)
+        max_repeted = max(probs.values())
+        for key, value in probs.items():
+            if value == max_repeted:
+                cr_key += key
     df = pd.read_csv('letters.csv')
     for j in df['letters'].values:
         answer = ''
-        for i in key_blocks:
-            probs = letters_probability(i)
-            max_r = max(probs.values())
-            for key, value in probs.items():
-                if value == max_r:
-                    period = key
-            k = (alphabet_.index(period) - alphabet_.index(j)) % 32
-            answer += alphabet_[k]
+        for k in cr_key:
+            key = (alphabet_.index(k) - alphabet_.index(j)) % 32
+            answer += alphabet_[key]
         print(answer)
