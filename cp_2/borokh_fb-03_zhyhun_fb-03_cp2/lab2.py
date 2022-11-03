@@ -21,7 +21,7 @@ def de_chiffre_de_vigenere(text: str, chif: str):
 
     out_text = ''
     for i in range(len(text)):
-        new_let = (alphabet_.index(text[i]) - (alphabet_.index(chif[i % len(chif)])) + 32) % len(alphabet_)
+        new_let = (alphabet_.index(text[i]) - (alphabet_.index(chif[i % len(chif)]))) % len(alphabet_)
         out_text += alphabet_[new_let]
     return out_text
 
@@ -73,7 +73,6 @@ if __name__ == '__main__':
     encrypted_text_5 = chiffre_de_vigenere(text, 'домдр')
     encrypted_text_11 = chiffre_de_vigenere(text, 'домдраконов')
 
-    #    decrypted_text_2 = decryption(text,)
 
     with open('en_text_2.txt', 'w') as f:
         f.write(encrypted_text_2)
@@ -93,14 +92,13 @@ if __name__ == '__main__':
     et5_ci = compliance_index(encrypted_text_5, letters_probability(encrypted_text_5))  # 5
     et11_ci = compliance_index(encrypted_text_11, letters_probability(encrypted_text_11))  # 11
 
-    """    
+    print('Compliance_index:')
     print(ot_ci)
     print(et2_ci)
     print(et3_ci)
     print(et4_ci)
     print(et5_ci)
     print(et11_ci)
-    """
 
     array = [ot_ci, et2_ci, et3_ci, et4_ci, et5_ci, et11_ci]
     indexes = [0, 2, 3, 4, 5, 11]
@@ -130,7 +128,7 @@ if __name__ == '__main__':
         if value == max_r:
             print(key)
             break
-    key_blocks = break_for_blocks_(text1, 21)
+    key_blocks = break_for_blocks_(text1, 14)
     cr_key = ''
     for i in key_blocks:
         probs = letters_probability(i)
@@ -145,3 +143,8 @@ if __name__ == '__main__':
             key = (alphabet_.index(k) - alphabet_.index(j)) % 32
             answer += alphabet_[key]
         print(answer)
+
+    decoded_text = de_chiffre_de_vigenere(text1, 'экомаятникфуко')
+
+    with open('decoded_text.txt', 'w') as f:
+        f.write(decoded_text)
