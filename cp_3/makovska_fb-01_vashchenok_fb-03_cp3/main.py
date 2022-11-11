@@ -50,7 +50,6 @@ alfavit = 'абвгдеёэжзиыйклмнопрстуфхцчшщъьюя'  
 alfavit_d = 'абвгдежзийклмнопрстуфхцчшщьыэюя'
 
 
-
 def filter_txt(file_name):
     # зчитуємо текст
     file = open(file_name, encoding="utf8")
@@ -118,10 +117,7 @@ print('\nЧастота біграм: ', f1)
 print(most_freq(f1))  # шукаємо 5 найбільш зустріваних
 f2 = frequency_of_bigrams(text, alfavit, False)
 print('\nЧастота перехресних біграм: ', f2)
-print(most_freq(f2))  # шукаємо 5 найбільш зустріваних
-
-
-
+print(most_freq(f2), "\n")  # шукаємо 5 найбільш зустріваних
 
 
 bigrams_rus_d = ['ст', 'но', 'то', 'на', 'ен']
@@ -143,64 +139,71 @@ file = open('filtered_2.txt')
 text_2 = file.read()
 file.close()
 
-# стандарт у ру
+# стандарт в ру
 st = 545
 no = 417
 to = 572
 na = 403
 en = 168
 
-# нашого шифротексту
+# нашего шифротекста
 vn = 75
 tn = 571
 dk = 134
 un = 602
 hshch = 676
 
-
-a = abs((hshch - vn) * inverted_element(en - st, 31)) % (31 * 31)
-b = abs((hshch - a * en) % (31 * 31))
-print(a, b)
-
-
-def egcd(a, b):
-    x, y, u, v = 0, 1, 1, 0
-    while a != 0:
-        q, r = b // a, b % a
-        m, n = x - u * q, y - v * q
-        b, a, x, y, u, v = a, r, u, v, m, n
-    gcd = b
-    return gcd, x, y
+a = int(solving_equations(st - en, hshch - dk, 31 ** 2))
+b = int((hshch - a * st) % 31 ** 2)
+print("Ваши ключи =", a, "и", b)
 
 
-def modinverse(a, m):
-    gcd, x, y = egcd(a, m)
-    if gcd != 1:
-        return None  # modular inverse does not exist
-    else:
-        return x % m
+def convertation_to_num(bigr):
+    number = alfavit_d.index(bigr[0]) * 31 + alfavit_d.index(bigr[1])
+    return number
 
 
 def aff_decrypt(cipher, key1, key2):
-    numbers = [i for i in range(31)]
-    mapping_table = dict(zip(alfavit_d, numbers))
-    cursor = list()
-    ciphertext = list()
-    for p in cipher:
-        cursor.append((mapping_table[p] * key1 + key2) % 31)
-    for c in cursor:
-        for letter, num in mapping_table.items():
-            if num == c:
-                ciphertext.append(letter)
-    return ''.join(ciphertext)
+    arr_text = []
+    for i in range(0, len(cipher) - 1, 2):
+        x = (inverted_element(key1, 31 ** 2) * (convertation_to_num(cipher[i:i + 2]) - key2)) % (31 ** 2)
+        arr_text.append(alfavit_d[x // 31] + alfavit_d[x % 31])
+    str_text = ''.join(i for i in arr_text)
+    return str_text
 
 
-# Driver Code to test the above functions
+def checking(ciph):
+    bukv_check = 'ое'
+    pidrahunok = 0
+    for bukva in text:
+        pidrahunok += 1
+
+    for c in bukv_check:
+        i = 0
+        for bukva in ciph:
+            if c == bukva:
+                i += 1
+        m = i * 100 / pidrahunok
+        if c == 'о' and m < 7:
+            print('Если Вы видите этот текст, значит ключ не верный, так как частота o =', m, "что является меньше "
+                                                                                              "стандартного.")
+            return 0
+        if c == 'е' and m < 7:
+            print('Если Вы видите этот текст, значит ключ не верный, так как частота е =', m, "что является меньше "
+                                                                                              "стандартного.")
+            return 0
+
+
 def main():
     key1 = a
     key2 = b
-    # calling decryption function
-    print('Decrypted Text: {}'.format(aff_decrypt(text_2, key1, key2)))
+    decr = aff_decrypt(text_2, key1, key2)
+    checking(decr)
+    print("\nDecrypted Text: {}".format(decr))
+    new_file = open('decr.txt', 'w')
+    new_file.write(decr)
+    new_file.close()
+    print("Ваш текст записан в файл 'decr.txt'.")
 
 
 main()
