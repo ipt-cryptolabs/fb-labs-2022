@@ -1,7 +1,4 @@
-symbols = ' абвгдежзийклмнопрстуфхцчшщыьэюя'
-
-with open('12.txt', 'r', encoding='utf-8') as file:
-    text = file.read().replace('\n', '')
+symbols = 'абвгдежзийклмнопрстуфхцчшщыьэюя'
 
 
 def bigram_frequency(text, step=2):
@@ -19,5 +16,3 @@ def bigram_frequency(text, step=2):
         bigrams_frequency[bigram] = round(number / bigrams_number, 8)
 
     return dict(sorted(bigrams_frequency.items(), key=lambda x: x[1], reverse=True))
-
-
