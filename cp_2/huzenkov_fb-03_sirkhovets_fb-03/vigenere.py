@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 alphabet = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'
 max_key_len = 128
 
@@ -54,6 +56,9 @@ def count_period(cypher_text, theoretical_index):
             period_indexes.append(count_index(b))
         # sum_indexes /= len(blocks)
         indexes.append(min(period_indexes))
+    plt.xticks(range(1, len(indexes)+1))
+    plt.bar(range(1, len(indexes)+1), indexes)
+    plt.show()
     for i in indexes:
         differences.append(abs(theoretical_index - i))
     return differences.index(min(differences)) + 2

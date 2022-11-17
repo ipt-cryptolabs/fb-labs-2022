@@ -2,7 +2,7 @@ import re
 import vigenere
 from vigenere import *
 
-vigenere.max_key_len = 256
+vigenere.max_key_len = 25
 
 text = open('text.txt', 'r').read()
 text = text.lower()
