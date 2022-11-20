@@ -1,4 +1,4 @@
-symbols = 'абвгдежзийклмнопрстуфхцчшщыьэюя'
+symbols = 'абвгдежзийклмнопрстуфхцчшщьыэюя'
 
 
 def bigram_frequency(text, step=2):
