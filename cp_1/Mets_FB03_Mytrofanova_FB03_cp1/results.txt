@@ -1,6 +1,0 @@
-Letters with whitespaces entropy: 4.371059 ; redundancy: 0.125788
-Letters without whitespaces entropy: 4.453914 ; redundancy: 0.100982
-Bigrams with whitespaces with crossing entropy: 3.9558 ; redundancy: 0.20884
-Bigrams with whitespaces without crossing entropy: 3.951953 ; redundancy: 0.209609
-Bigrams without whitespaces with crossing entropy: 4.126059 ; redundancy: 0.167159
-Bigrams without whitespaces without crossing entropy: 4.12453 ; redundancy: 0.167467
