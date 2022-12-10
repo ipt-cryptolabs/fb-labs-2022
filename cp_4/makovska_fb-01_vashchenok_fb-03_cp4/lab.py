@@ -85,7 +85,7 @@ def mod_gcd(a, b):
 
 
 numbers = gen_prime_numb(256)
-print(numbers)
+# print(numbers)
 print(numbers[0] * numbers[1] <= numbers[2] * numbers[3])
 
 
@@ -108,10 +108,11 @@ prA = keysA[0]
 keysB = GenerateKeyPair(numbers[2], numbers[3])
 publB = keysB[1]
 prB = keysB[0]
-print(publA)
-print(prA)
-print(publB)
-print(prB)
+print("Our keys:")
+print("Public A =", publA)
+print("Private A =", prA)
+print("Public B =", publB)
+print("Private B =", prB)
 
 
 def Encrypt(txt, publ):
@@ -135,8 +136,35 @@ def Verify(S, M, publ):
     else:
         return False
 
-# def SendKey():
-#
-#
-# def ReceiveKey():
-#
+
+def SendKey():
+    k = random.randint(10, 10000000000)
+    k1 = Encrypt(k, publB)
+    s = Sign(k, keysA)
+    s1 = Encrypt(s[1], publB)
+    message = (k1, s1)
+    print("\nMessage:")
+    print(k)
+    print("Encrypted:")
+    print(message)
+    print("Sign:")
+    print(s, "\n")
+    return message
+
+
+def ReceiveKey(message):
+    kDecr = Decrypt(message[0], prB)
+    sDecr = Decrypt(message[1], prB)
+    print("\nDecrypted:")
+    print(kDecr)
+    print("Decrypted Sign:")
+    print(sDecr, "\n")
+
+    verification = Verify(sDecr, kDecr, publA)
+    if verification:
+        print("!Verified!")
+    else:
+        print("No verified")
+
+
+ReceiveKey(SendKey())
