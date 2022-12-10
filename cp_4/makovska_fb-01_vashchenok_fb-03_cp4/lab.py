@@ -102,25 +102,39 @@ def GenerateKeyPair(p, q):
 
 # for A
 keysA = GenerateKeyPair(numbers[0], numbers[1])
+publA = keysA[1]
+prA = keysA[0]
 # for B
 keysB = GenerateKeyPair(numbers[2], numbers[3])
-print(keysA)
-print(keysB)
+publB = keysB[1]
+prB = keysB[0]
+print(publA)
+print(prA)
+print(publB)
+print(prB)
 
-#
-# def Encrypt():
-#
-#
-#
-# def Decrypt():
-#
-#
-# def Sign():
-#
-#
-# def Verify():
-#
-#
+
+def Encrypt(txt, publ):
+    C = pow(txt, publ[1], publ[0])
+    return C
+
+
+def Decrypt(c, pr):
+    M = pow(c, pr[0], pr[1] * pr[2])
+    return M
+
+
+def Sign(m, keys):
+    S = pow(m, keys[0][0], keys[1][0])
+    return m, S
+
+
+def Verify(S, M, publ):
+    if M == pow(S, publ[1], publ[0]):
+        return True
+    else:
+        return False
+
 # def SendKey():
 #
 #
