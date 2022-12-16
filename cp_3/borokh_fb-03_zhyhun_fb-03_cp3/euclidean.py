@@ -17,8 +17,15 @@ def articled_element(a, n):
     return gcdExtended(a, n)[1]
 
 
+def _gcd(a: int, b: int):
+    if b == 0:
+        return abs(a)
+    else:
+        return _gcd(b, a % b)
+
+
 def linear_comparison(a, b, n):
-    d = gcd(a, n)
+    d = _gcd(a, n)
     u = articled_element(a, n)
     if d == 1:
         return [(u * b) % n]
@@ -31,8 +38,11 @@ def linear_comparison(a, b, n):
             b = b // d
             n = n // d
             x0 = (articled_element(a, n) * b) % n
-            for i in range(n):
-                ans.append(x0 + n * i)
+            for i in range(d):
+                ans.append(x0 + (n % d) * i)
             return ans
-    return None
+
+
+if __name__ == "__main__":
+    print(linear_comparison(6, 20, 31))
 
