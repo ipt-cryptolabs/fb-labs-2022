@@ -92,9 +92,9 @@ for key in sorted_keys:
     sorted_dict[key] = dict[key]
 
 
-print(sorted_dict)
+#print(sorted_dict)
 rating_of_bigrams_in_shifred_text = list(sorted_dict.keys())[0:5]
-print(rating_of_bigrams_in_shifred_text)
+#print(rating_of_bigrams_in_shifred_text)
 rating_of_bigrams_in_russian_language = ["ст", "но", "то", "на", "ен"]
 
 
