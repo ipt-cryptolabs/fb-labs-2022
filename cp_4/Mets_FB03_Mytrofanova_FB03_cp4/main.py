@@ -8,6 +8,7 @@ def generate_prime_number(bits):
 
     def test_miller_rabin(p):
         if p % 2 == 0 or p % 3 == 0 or p % 5 == 0 or p % 7 == 0 or p % 11 == 0:
+            print(p, 'is not prime number!')
             return False
 
         s, d = 0, p - 1
@@ -20,6 +21,7 @@ def generate_prime_number(bits):
         x = random.randint(2, p - 2)
 
         if math.gcd(x, p) > 1:
+            print(p, 'is not prime number!')
             return False
 
         if pow(x, d, p) == 1 or pow(x, d, p) == -1:
@@ -30,8 +32,9 @@ def generate_prime_number(bits):
             if x == -1:
                 return True
             if x == 1:
+                print(p, 'is not prime number!')
                 return False
-
+        print(p, 'is not prime number!')
         return False
 
     num = get_random_number(bits)
@@ -72,7 +75,7 @@ def decrypt(encrypted, key):
 
 
 def verify(signed, message, key):
-    if message == pow(signed[1], key[0][1], key[0][0]):
+    if message == pow(signed, key[0][1], key[0][0]):
         print('Message is verified!')
     else:
         print('Fake sign!')
@@ -89,12 +92,17 @@ s_keys = generate_keys(s_numbers)
 r_keys = generate_keys(r_numbers)
 print(f'Sender public and private keys: {s_keys[0]}\n{s_keys[1]}')
 print(f'Receiver public and private keys: {r_keys[0]}\n{r_keys[1]}')
-msg = random.randint(3, 999999)
+msg = random.randint(0, r_numbers[0] * r_numbers[1])
 encrypted = encrypt(msg, r_keys)
 signed = sign(msg, s_keys)
-decrypted = decrypt(encrypted, r_keys)
+s1 = encrypt(signed[1], r_keys)
+final_message = (encrypted, s1)
+decrypted = decrypt(final_message[0], r_keys)
+decrypted_sign = decrypt(final_message[1], r_keys)
 print(f'Original message: {msg}')
 print(f'Encrypted message: {encrypted}')
 print(f'Signed message: {signed}')
+print(f'Final encrypted message: {final_message}')
 print(f'Decrypted message: {decrypted}')
-print(verify(signed, msg, s_keys))
+print(f'Decrypted sign: {decrypted_sign}')
+print(verify(decrypted_sign, decrypted, s_keys))
