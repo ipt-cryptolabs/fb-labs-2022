@@ -13,7 +13,7 @@ bigrams = Counter(bigrams)
 text_top = []
 for i in bigrams.most_common(5):
     text_top.append(i[0])
-# print(text_top)
+# print(text_top,)
 
 bigrams = []
 system = []
@@ -25,6 +25,7 @@ for i, b in enumerate(bigrams):
         if i == j or b[0] == b2[0] or b[1] == b2[1]:
             continue
         system.append([b, b2])
+
 
 new_sus=[]
 for i in range(len(system)):
